@@ -27,6 +27,8 @@ export default {
     Floor,
     Brand,
   },
+  computed: {},
+  methods: {},
 };
 </script>
 

@@ -6,4 +6,4 @@ import requests from './request';
 // axios法请求返回结果是Promise对象
 
 export const reqCategoryList = () =>
-  requests({ url: '/api/product/getBaseCategoryList', method: 'get' });
+  requests({ url: '/product/getBaseCategoryList', method: 'get' });

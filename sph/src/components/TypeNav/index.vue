@@ -1694,6 +1694,10 @@
 <script>
 export default {
   name: 'TypeNav',
+  mounted() {
+    // 通知vuex发请求，获取数据，储存于仓库中
+    this.$store.dispatch('categoryList');
+  },
 };
 </script>
 

@@ -2,9 +2,10 @@ import Vue from 'vue';
 import App from './App.vue';
 // 引入路由
 import router from '@/router';
+// Vue生产提示
 Vue.config.productionTip = false;
 // 注册全局组件
-import TypeNav from '@/pages/Home/TypeNav';
+import TypeNav from '@/components/TypeNav';
 // 引入vuex
 import store from '@/store';
 // 注册全局组件
