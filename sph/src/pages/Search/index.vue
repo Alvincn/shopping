@@ -1,4 +1,4 @@
-<template><div>搜索</div></template>
+<template><TypeNav /></template>
 
 <script>
 export default {
