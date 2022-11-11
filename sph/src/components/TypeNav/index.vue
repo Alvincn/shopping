@@ -1,7 +1,53 @@
 <template>
   <div class="type-nav">
-    <div class="container" @mouseleave="currentIndex = -1">
-      <h2 class="all" @mouseover="show = true">全部商品分类</h2>
+    <div class="container" @mouseleave="leaveShow" @mouseenter="enterShow">
+      <h2 class="all">全部商品分类</h2>
+      <transition name="sort">
+        <div class="sort" v-show="show">
+          <div class="all-sort-list2" @click="goSearch">
+            <div
+              class="item"
+              v-for="(item, index) in categoryList"
+              :key="item.categoryId"
+              :class="{ cur: currentIndex == index }"
+            >
+              <h3 @mouseover="changeColor(index)">
+                <a :data-categoryname="item.categoryName" :data-category1id="item.categoryId">{{
+                  item.categoryName
+                }}</a>
+              </h3>
+              <div
+                class="item-list clearfix"
+                :style="{
+                  display: currentIndex == index ? 'block' : '',
+                }"
+              >
+                <div class="subitem" v-for="item2 in item.categoryChild" :key="item2.categoryId">
+                  <dl class="fore">
+                    <dt>
+                      <a
+                        :data-categoryname="item2.categoryName"
+                        :data-category2id="item2.categoryId"
+                        >{{ item2.categoryName }}</a
+                      >
+                    </dt>
+                    <dd>
+                      <em v-for="item3 in item2.categoryChild" :key="item3.categoryId">
+                        <a
+                          :data-categoryname="item3.categoryName"
+                          :data-category3id="item3.categoryId"
+                          >{{ item3.categoryName }}</a
+                        >
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,49 +58,6 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort" v-show="show" @mouseleave="show = false">
-        <div class="all-sort-list2" @click="goSearch">
-          <div
-            class="item"
-            v-for="(item, index) in categoryList"
-            :key="item.categoryId"
-            :class="{ cur: currentIndex == index }"
-          >
-            <h3 @mouseover="changeColor(index)">
-              <a :data-categoryname="item.categoryName" :data-category1id="item.categoryId">{{
-                item.categoryName
-              }}</a>
-            </h3>
-            <div
-              class="item-list clearfix"
-              :style="{
-                display: currentIndex == index ? 'block' : '',
-              }"
-            >
-              <div class="subitem" v-for="item2 in item.categoryChild" :key="item2.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a
-                      :data-categoryname="item2.categoryName"
-                      :data-category2id="item2.categoryId"
-                      >{{ item2.categoryName }}</a
-                    >
-                  </dt>
-                  <dd>
-                    <em v-for="item3 in item2.categoryChild" :key="item3.categoryId">
-                      <a
-                        :data-categoryname="item3.categoryName"
-                        :data-category3id="item3.categoryId"
-                        >{{ item3.categoryName }}</a
-                      >
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -79,12 +82,14 @@ export default {
     if (this.$route.path == '/search') {
       this.show = false;
     }
-    this.$store.dispatch('categoryList');
   },
   computed: {
-    ...mapState({
-      categoryList: (state) => state.home.categoryList,
-    }),
+    // ...mapState({
+    //   categoryList: (state) => state.home.categoryList,
+    // }),
+    categoryList() {
+      return this.$store.state.home.categoryList;
+    },
   },
   methods: {
     // changeColor(index) {
@@ -107,8 +112,21 @@ export default {
         } else {
           query.category3id = category3id;
         }
-        location.query = query;
+        if (this.$route.params) {
+          location.params = this.$route.params;
+          location.query = query;
+        }
         this.$router.push(location);
+      }
+    },
+    enterShow() {
+      this.show = true;
+    },
+    leaveShow() {
+      this.currentIndex = -1;
+
+      if (this.$route.path != '/home') {
+        this.show = false;
       }
     },
   },
@@ -234,6 +252,16 @@ export default {
           // }
         }
       }
+    }
+    // 过度动画开始阶段
+    .sort-enter {
+      height: 0px;
+    }
+    .sort-enter-to {
+      height: 461px;
+    }
+    .sort-enter-active {
+      transition: all 200ms linear;
     }
   }
 }

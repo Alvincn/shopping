@@ -8,6 +8,8 @@ Vue.config.productionTip = false;
 import TypeNav from '@/components/TypeNav';
 // 引入vuex
 import store from '@/store';
+// 引入mockServe
+import '@/mock/mockServe.js';
 // 注册全局组件
 // 三个参数：1. 全局组件的名字 2. 哪一个组件
 Vue.component(TypeNav.name, TypeNav);

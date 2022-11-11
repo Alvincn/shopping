@@ -1,5 +1,6 @@
 // 进行api的统一管理
 import requests from './request';
+import mockRequests from './mockAjax';
 
 // 三级联动接口
 // /api/product/getBaseCategoryList   get   无参数
@@ -7,3 +8,4 @@ import requests from './request';
 
 export const reqCategoryList = () =>
   requests({ url: '/product/getBaseCategoryList', method: 'get' });
+export const reqGetBannerList = () => mockRequests.get('/banner');

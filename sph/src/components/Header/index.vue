@@ -36,6 +36,7 @@
               id="autocomplete"
               class="input-error input-xxlarge"
               v-model="keyword"
+              placeholder="搜索一下。。。"
             />
             <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
               搜索
@@ -58,11 +59,14 @@ export default {
   methods: {
     goSearch() {
       // this.$router.push('/search/' + this.keyword + '?keyword=' + this.keyword.toUpperCase());
-      this.$router.push({
-        name: 'search',
-        params: { keyword: this.keyword },
-        query: { k: this.keyword.toUpperCase() },
-      });
+      if (this.$route.query) {
+        let location = {
+          name: 'search',
+          params: { keyword: this.keyword || undefined },
+          query: this.$route.query,
+        };
+        this.$router.push(location);
+      }
     },
   },
 };
