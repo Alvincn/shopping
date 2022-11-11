@@ -4,7 +4,7 @@ import { reqCategoryList, reqGetBannerList } from '@/api/index.js';
 const state = {
   // 初始值根据获得的数据设置类型
   categoryList: [],
-  bannerlist: [],
+  bannerList: [],
 };
 const mutations = {
   CATEGORYLIST(state, categoryList) {
@@ -12,7 +12,7 @@ const mutations = {
     state.categoryList = categoryList;
   },
   BANNERLIST(state, bannerList) {
-    state.bannerlist = bannerList;
+    state.bannerList = bannerList;
   },
 };
 const actions = {

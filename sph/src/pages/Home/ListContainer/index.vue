@@ -6,8 +6,8 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div class="swiper-slide" v-for="carousel in bannerList" :key="carousel.id">
+              <img :src="carousel.imgUrl" />
             </div>
           </div>
           <!-- 如果需要分页器 -->
@@ -92,10 +92,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import Swiper from 'swiper';
 export default {
   name: '',
   mounted() {
     this.$store.dispatch('getBannerList');
+  },
+  computed: {
+    ...mapState({
+      bannerList: (state) => state.home.bannerList,
+    }),
   },
 };
 </script>
