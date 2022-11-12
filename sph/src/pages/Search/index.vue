@@ -143,6 +143,16 @@ export default {
   components: {
     SearchSelector,
   },
+  beforeMount() {
+    // 复杂的写法
+    // this.searchParams.category1Id = this.$route.query.category1Id;
+    // this.searchParams.category2Id = this.$route.query.category2Id;
+    // this.searchParams.category3Id = this.$route.query.category3Id;
+    // this.searchParams.categoryName = this.$route.query.categoryName;
+    // this.searchParams.keyword = this.$route.params.keyword;
+    // 简单的写法
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
+  },
   mounted() {
     this.getData();
   },
