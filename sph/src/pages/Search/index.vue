@@ -39,10 +39,10 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
+                <li :class="{ active: isOne }">
                   <a href="#">综合</a>
                 </li>
-                <li>
+                <li :class="{ active: isTwo }">
                   <a href="#">价格⬇</a>
                 </li>
               </ul>
@@ -159,6 +159,12 @@ export default {
   },
   computed: {
     ...mapGetters(['goodsList', 'attrsList', 'trademarkList']),
+    isOne() {
+      return searchParams.order.indexOf('1') != -1;
+    },
+    isTwo() {
+      return searchParams.order.indexOf('2') != -1;
+    },
   },
   methods: {
     getData() {
