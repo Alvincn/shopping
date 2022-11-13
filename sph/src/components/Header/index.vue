@@ -56,6 +56,12 @@ export default {
       keyword: '',
     };
   },
+  mounted() {
+    this.$bus.$on('clear', (num) => {
+      this.keyword = '';
+      console.log(num);
+    });
+  },
   methods: {
     goSearch() {
       // this.$router.push('/search/' + this.keyword + '?keyword=' + this.keyword.toUpperCase());

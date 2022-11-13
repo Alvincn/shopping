@@ -12,7 +12,7 @@
               :class="{ cur: currentIndex == index }"
             >
               <h3 @mouseover="changeColor(index)">
-                <a :data-categoryname="item.categoryName" :data-category1id="item.categoryId">{{
+                <a :data-categoryName="item.categoryName" :data-category1Id="item.categoryId">{{
                   item.categoryName
                 }}</a>
               </h3>
@@ -26,16 +26,16 @@
                   <dl class="fore">
                     <dt>
                       <a
-                        :data-categoryname="item2.categoryName"
-                        :data-category2id="item2.categoryId"
+                        :data-categoryName="item2.categoryName"
+                        :data-category2Id="item2.categoryId"
                         >{{ item2.categoryName }}</a
                       >
                     </dt>
                     <dd>
                       <em v-for="item3 in item2.categoryChild" :key="item3.categoryId">
                         <a
-                          :data-categoryname="item3.categoryName"
-                          :data-category3id="item3.categoryId"
+                          :data-categoryName="item3.categoryName"
+                          :data-category3Id="item3.categoryId"
                           >{{ item3.categoryName }}</a
                         >
                       </em>
@@ -103,14 +103,14 @@ export default {
       let { categoryname, category1id, category2id, category3id } = element.dataset;
       if (categoryname) {
         let location = { name: 'search' };
-        let query = { categoryname: categoryname };
+        let query = { categoryName: categoryname };
         if (category1id) {
-          query.category1id = category1id;
+          query.category1Id = category1id;
         }
         if (category2id) {
-          query.category2id = category2id;
+          query.category2Id = category2id;
         } else {
-          query.category3id = category3id;
+          query.category3Id = category3id;
         }
         if (this.$route.params) {
           location.params = this.$route.params;

@@ -11,15 +11,28 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName" @click="removeCategoryName">
+              {{ this.searchParams.categoryName }}<i>×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyword" @click="removeKeyword">
+              {{ searchParams.keyword }}<i>×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.trademark" @click="removeTrade">
+              {{ searchParams.trademark.split(':')[1] }}<i>×</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(attrIndex, index) in searchParams.props"
+              :key="index"
+              @click="removeAttr(index)"
+            >
+              {{ attrIndex.split(':')[1] }}<i>×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -28,18 +41,6 @@
               <ul class="sui-nav">
                 <li class="active">
                   <a href="#">综合</a>
-                </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
                 </li>
                 <li>
                   <a href="#">价格⬇</a>
@@ -145,9 +146,9 @@ export default {
   },
   beforeMount() {
     // 复杂的写法
-    // this.searchParams.category1Id = this.$route.query.category1Id;
-    // this.searchParams.category2Id = this.$route.query.category2Id;
-    // this.searchParams.category3Id = this.$route.query.category3Id;
+    // this.searchParams.category1id = this.$route.query.category1id;
+    // this.searchParams.category2id = this.$route.query.category2id;
+    // this.searchParams.category3id = this.$route.query.category3id;
     // this.searchParams.categoryName = this.$route.query.categoryName;
     // this.searchParams.keyword = this.$route.params.keyword;
     // 简单的写法
@@ -161,8 +162,48 @@ export default {
   },
   methods: {
     getData() {
-      console.log(this.$route.query, this.$route.params);
-      this.$store.dispatch('getSearchList', {});
+      this.$store.dispatch('getSearchList', this.searchParams);
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.$router.push({ name: 'search', params: this.$route.params || undefined });
+      this.getData();
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.$router.push({ name: 'search', params: undefined, query: this.$route.query });
+      this.getData();
+      this.$bus.$emit('clear', 123);
+    },
+    removeTrade() {
+      this.searchParams.trademark = undefined;
+      this.getData();
+    },
+    trademarkInfo(trademark) {
+      console.log('我是父组件', trademark);
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getData();
+    },
+    attrInfo(attr, attrValue) {
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(props) == -1) {
+        this.searchParams.props.push(props);
+        this.getData();
+      }
+    },
+    removeAttr(index) {
+      let result = this.searchParams.props.splice(index, 1);
+      this.getData();
+    },
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+      console.log(this.searchParams);
+      this.getData();
     },
   },
 };
