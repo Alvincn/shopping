@@ -39,11 +39,23 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li :class="{ active: isOne }">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder(1)">
+                  <a href="javascript:;"
+                    >综合<i
+                      class="iconfont"
+                      v-show="isOne"
+                      :class="{ 'icon-long-arrow-up': isUp, 'icon-long-arrow-down': isDown }"
+                    ></i
+                  ></a>
                 </li>
-                <li :class="{ active: isTwo }">
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder(2)">
+                  <a href="javascript:;"
+                    >价格<i
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{ 'icon-long-arrow-up': isUp, 'icon-long-arrow-down': isDown }"
+                    ></i
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -85,35 +97,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination :pageNo="1" :pageSize="2" :total="3" :continues="4"></Pagination>
         </div>
       </div>
     </div>
@@ -133,12 +117,13 @@ export default {
         category3Id: '',
         categoryName: '',
         keyword: '',
-        order: '',
+        order: '1:desc',
         pageNo: 1,
         pageSize: 10,
         props: [],
         trademark: '',
       },
+      num: 0,
     };
   },
   components: {
@@ -160,10 +145,16 @@ export default {
   computed: {
     ...mapGetters(['goodsList', 'attrsList', 'trademarkList']),
     isOne() {
-      return searchParams.order.indexOf('1') != -1;
+      return this.searchParams.order.indexOf('1') != -1;
     },
     isTwo() {
-      return searchParams.order.indexOf('2') != -1;
+      return this.searchParams.order.indexOf('2') != -1;
+    },
+    isUp() {
+      return this.searchParams.order.indexOf('asc') != -1;
+    },
+    isDown() {
+      return this.searchParams.order.indexOf('desc') != -1;
     },
   },
   methods: {
@@ -202,6 +193,29 @@ export default {
     },
     removeAttr(index) {
       let result = this.searchParams.props.splice(index, 1);
+      this.getData();
+    },
+    changeOrder(flag) {
+      let originOrder = this.searchParams.order;
+      let originflag = this.searchParams.order.split(':')[0];
+      let originSort = this.searchParams.order.split(':')[1];
+      if (flag == 1) {
+        if (originflag != flag) {
+          originflag = 1;
+          originSort = 'desc';
+        } else {
+          originSort == 'asc' ? (originSort = 'desc') : (originSort = 'asc');
+        }
+      } else {
+        if (originflag != flag) {
+          originflag = 2;
+          originSort = 'desc';
+        } else {
+          originflag = 2;
+          originSort == 'asc' ? (originSort = 'desc') : (originSort = 'asc');
+        }
+      }
+      this.searchParams.order = `${originflag}:${originSort}`;
       this.getData();
     },
   },
@@ -454,93 +468,6 @@ export default {
                 }
               }
             }
-          }
-        }
-      }
-
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
-
-        .sui-pagination {
-          margin: 18px 0;
-
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
-
-            li {
-              line-height: 18px;
-              display: inline-block;
-
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
-
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
-
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
-
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
-
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
           }
         }
       }
