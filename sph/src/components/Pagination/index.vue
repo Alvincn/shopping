@@ -2,14 +2,16 @@
   <div class="pagination">
     <button>上一页</button>
 
-    <button>1</button>
-    <button>···</button>
+    <button v-if="startNumAndEndNum.start > 1">1</button>
+    <button v-if="startNumAndEndNum.start > 2">···</button>
 
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>6</button>
-    <button>7</button>
+    <button
+      v-for="(page, index) in startNumAndEndNum.end"
+      :key="index"
+      v-if="page >= startNumAndEndNum.start"
+    >
+      {{ page }}
+    </button>
 
     <button>···</button>
     <button></button>
@@ -25,20 +27,31 @@ export default {
   props: ['pageNo', 'pageSize', 'total', 'continues'],
   methods: {},
   computed: {
-    totalPages() {
+    totalPage() {
       return Math.ceil(this.total / this.pageSize);
     },
     startNumAndEndNum() {
+      const { continues, pageNo, totalPage } = this;
       // 先定义两个变量储存起始数字和结束数字
       let start = 0,
         end = 0;
-      if (this.continues > this.totalPages) {
+      if (continues > totalPage) {
         start = 1;
-        end = 4;
+        end = totalPage;
       } else {
-        start = pageNo - 2;
-        start = pageNo + 2;
+        start = pageNo - parseInt(continues / 2);
+        end = pageNo + parseInt(continues / 2);
+        console.log(start, end);
+        if (start < 1) {
+          start = 1;
+          end = continues;
+        }
+        if (end > totalPage) {
+          end = totalPage;
+          start = totalPage - continues + 1;
+        }
       }
+      return { start, end };
     },
   },
 };
