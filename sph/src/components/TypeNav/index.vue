@@ -1,7 +1,9 @@
 <template>
   <div class="type-nav">
-    <div class="container" @mouseleave="leaveShow" @mouseenter="enterShow">
-      <h2 class="all">全部商品分类</h2>
+    <div class="container" @mouseleave="leaveShow">
+      <div @mouseenter="enterShow">
+        <h2 class="all">全部商品分类</h2>
+      </div>
       <transition name="sort">
         <div class="sort" v-show="show">
           <div class="all-sort-list2" @click="goSearch">
