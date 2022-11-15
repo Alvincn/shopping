@@ -1,10 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+// 引入全部路由
+import routes from './routes';
 Vue.use(VueRouter);
-import Home from '@/pages/Home';
-import Search from '@/pages/Search';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 let originPush = VueRouter.prototype.push;
 let originReplace = VueRouter.prototype.replace;
 // 对路由的push方法进行重写
@@ -33,39 +31,8 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
   }
 };
 export default new VueRouter({
-  routes: [
-    {
-      path: '/',
-      redirect: '/home',
-    },
-    {
-      path: '/home',
-      component: Home,
-      meta: {
-        show: true,
-      },
-    },
-    {
-      path: '/search/:keyword?',
-      component: Search,
-      meta: {
-        show: true,
-      },
-      name: 'search',
-    },
-    {
-      path: '/login',
-      component: Login,
-      meta: {
-        show: false,
-      },
-    },
-    {
-      path: '/register',
-      component: Register,
-      meta: {
-        show: false,
-      },
-    },
-  ],
+  routes,
+  scrollBehavior(from, to, savedPosition) {
+    return { y: 0 };
+  },
 });
