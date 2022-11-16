@@ -2,7 +2,11 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(item, index) in skuImageList" :key="item.id">
-        <img :src="item.imgUrl" />
+        <img
+          :src="item.imgUrl"
+          :class="{ active: currentIndex == index }"
+          @click="changeIndex(index)"
+        />
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -11,11 +15,20 @@
 </template>
 
 <script>
-import Swiper from 'swiper';
 export default {
   name: 'ImageList',
+  data() {
+    return {
+      currentIndex: 0,
+    };
+  },
   props: ['skuImageList'],
   mounted() {},
+  methods: {
+    changeIndex(index) {
+      this.currentIndex = index;
+    },
+  },
 };
 </script>
 
