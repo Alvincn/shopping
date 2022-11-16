@@ -80,9 +80,11 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" @change="changeSkuNum" class="itxt" v-model="skuNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : skuNum == 1"
+                  >-</a
+                >
               </div>
               <div class="add">
                 <a href="javascript:">加入购物车</a>
@@ -334,6 +336,11 @@ export default {
     ImageList,
     Zoom,
   },
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   mounted() {
     this.$store.dispatch('getGoodInfo', this.$route.params.skuid);
   },
@@ -349,6 +356,17 @@ export default {
         item.isChecked = 0;
       });
       saleAttrValue.isChecked = 1;
+    },
+    changeSkuNum(event) {
+      if (isNaN(event.target.value * 1)) {
+        this.skuNum = 1;
+      }
+      if (event.target.value < 0) {
+        this.skuNum = 1;
+      }
+      if (event.target.value.indexOf('.') != -1) {
+        this.skuNum = Math.floor(event.target.value);
+      }
     },
   },
 };

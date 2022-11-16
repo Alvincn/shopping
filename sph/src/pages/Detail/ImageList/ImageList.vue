@@ -27,6 +27,7 @@ export default {
   methods: {
     changeIndex(index) {
       this.currentIndex = index;
+      this.$bus.$emit('changeImg', this.currentIndex);
     },
   },
 };
