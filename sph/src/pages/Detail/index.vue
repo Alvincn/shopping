@@ -65,11 +65,16 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
+              <dl v-for="(spuSaleAttr, index) in spuSaleAttrList" :key="spuSaleAttr.id">
+                <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
+                <dd
+                  changepirce="0"
+                  class="active"
+                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList"
+                  :key="spuSaleAttrValue.id"
+                >
+                  {{ spuSaleAttrValue.saleAttrValueName }}
+                </dd>
               </dl>
               <dl>
                 <dt class="title">内存容量</dt>
@@ -350,7 +355,7 @@ export default {
     this.$store.dispatch('getGoodInfo', this.$route.params.skuid);
   },
   computed: {
-    ...mapGetters(['categoryView', 'skuInfo']),
+    ...mapGetters(['categoryView', 'skuInfo', 'spuSaleAttrList']),
     skuImageList() {
       return this.skuInfo.skuImageList || [];
     },

@@ -15,6 +15,7 @@ import Swiper from 'swiper';
 export default {
   name: 'ImageList',
   props: ['skuImageList'],
+  mounted() {},
 };
 </script>
 
