@@ -87,7 +87,7 @@
                 >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -367,6 +367,12 @@ export default {
       if (event.target.value.indexOf('.') != -1) {
         this.skuNum = Math.floor(event.target.value);
       }
+    },
+    addShopCar() {
+      this.$store.dispatch('addOrUpdateShopCart', {
+        skuId: this.$route.params.skuid,
+        skuNum: this.skuNum,
+      });
     },
   },
 };

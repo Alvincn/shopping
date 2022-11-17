@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from '@/api';
+import { addOrUpdateShopCart, reqGoodsInfo, reqAddOrUpdateShopCart } from '@/api';
 
 const state = {
   goodInfo: {},
@@ -15,6 +15,10 @@ const actions = {
     if (result.code == 200) {
       commit('GETGOODINFO', result.data);
     }
+  },
+  async addOrUpdateShopCart({ commit }, obj) {
+    let { skuId, skuNum } = obj;
+    let result = await reqAddOrUpdateShopCart(obj.skuId, obj.skuNum);
   },
 };
 const getters = {

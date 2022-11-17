@@ -17,5 +17,7 @@ export const reqGetSearchInfo = (params) =>
 // 获取产品详情信息
 export const reqGoodsInfo = (skuId) => requests({ url: `/item/${skuId}`, method: 'get' });
 // 将商品添加到购物车中
-export const addOrUpdateShopCart = (skuId, skuNum) =>
-  requests({ url: `/cart/addToCart/${skuId}/${skuNum}}`, method: 'post' });
+export const reqAddOrUpdateShopCart = (skuId, skuNum) => {
+  let url = '/cart/addToCart/' + skuId + '/' + skuNum;
+  return requests({ url, method: 'post' });
+};
