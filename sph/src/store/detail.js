@@ -1,7 +1,9 @@
 import { addOrUpdateShopCart, reqGoodsInfo, reqAddOrUpdateShopCart } from '@/api';
-
+import { getUUID } from '@/utils/uuid_token';
 const state = {
   goodInfo: {},
+  // 游客临时身份
+  uuid_token: getUUID(),
 };
 const mutations = {
   GETGOODINFO(state, goodInfo) {
