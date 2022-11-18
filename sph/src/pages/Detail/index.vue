@@ -368,11 +368,17 @@ export default {
         this.skuNum = Math.floor(event.target.value);
       }
     },
-    addShopCar() {
-      this.$store.dispatch('addOrUpdateShopCart', {
-        skuId: this.$route.params.skuid,
-        skuNum: this.skuNum,
-      });
+    async addShopCar() {
+      try {
+        await this.$store.dispatch('addOrUpdateShopCart', {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        // 进行路由的跳转
+        this.$router.push({ name: 'addcartsuccess' });
+      } catch (error) {
+        alert(error);
+      }
     },
   },
 };
