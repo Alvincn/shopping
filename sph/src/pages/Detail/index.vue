@@ -375,7 +375,8 @@ export default {
           skuNum: this.skuNum,
         });
         // 进行路由的跳转
-        this.$router.push({ name: 'addcartsuccess' });
+        sessionStorage.setItem('skuInfo', JSON.stringify(this.skuInfo));
+        this.$router.push({ name: 'addcartsuccess', query: { skuNum: this.skuNum } });
       } catch (error) {
         alert(error);
       }
