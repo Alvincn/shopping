@@ -11,29 +11,36 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list" v-for="(cart, index) in cartInfoList" :key="cart.id">
+        <ul class="cart-list" v-for="(item, index) in cartInfoList" :key="item.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked" />
+            <input type="checkbox" name="chk_list" :checked="item.isChecked" />
           </li>
           <li class="cart-list-con2">
-            <img :src="cart.imgUrl" />
+            <img :src="item.imgUrl" />
             <div class="item-msg">
-              {{ cart.skuName }}
+              {{ item.skuName }}
             </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{ cart.skuPrice }}</span>
+            <span class="price">{{ item.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" :value="cart.skuNum" minnum="1" class="itxt" />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="handler('minus', -1, item)">-</a>
+            <input
+              autocomplete="off"
+              type="text"
+              :value="item.skuNum"
+              minnum="1"
+              class="itxt"
+              @change="handler('change', $event.target.value * 1, item)"
+            />
+            <a href="javascript:void(0)" class="plus" @click="handler('add', 1, item)">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
+            <span class="sum">{{ item.skuPrice * item.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteCartListById(item)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -66,7 +73,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-
+import _ from 'lodash';
 export default {
   name: 'ShopCart',
   mounted() {
@@ -76,6 +83,41 @@ export default {
     getData() {
       this.$store.dispatch('getCartList');
     },
+    handler: _.throttle(async function (type, disNum, cart) {
+      console.log(type, disNum, cart);
+      switch (type) {
+        case 'add':
+          disNum = 1;
+          break;
+        case 'minus':
+          disNum = cart.skuNum > 1 ? -1 : 0;
+          break;
+        case 'change':
+          if (isNaN(disNum) || disNum < 1) {
+            disNum = 0;
+          } else {
+            disNum = parseInt(disNum) - cart.skuNum;
+          }
+      }
+      try {
+        await this.$store.dispatch('addOrUpdateShopCart', {
+          skuId: cart.skuId,
+          skuNum: disNum,
+        });
+        this.getData();
+      } catch (error) {
+        alert(error);
+      }
+    }, 1000),
+    deleteCartListById: _.throttle(async function (cart) {
+      console.log(cart);
+      try {
+        await this.$store.dispatch('deleteCartListBySkuId', cart.skuId);
+        this.getData();
+      } catch (error) {
+        alert(error);
+      }
+    }, 1000),
   },
   computed: {
     ...mapGetters(['cartList']),

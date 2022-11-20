@@ -23,3 +23,6 @@ export const reqAddOrUpdateShopCart = (skuId, skuNum) => {
 };
 // 获取购物车列表
 export const reqCartList = (skuId) => requests({ url: `/cart/cartList`, method: 'get' });
+// 删除购物车数据
+export const reqDeleteCartById = (skuId) =>
+  requests({ url: `/cart/deleteCart/${skuId}`, method: 'delete' });
