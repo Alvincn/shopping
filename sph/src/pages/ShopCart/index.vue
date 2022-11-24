@@ -13,7 +13,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(item, index) in cartInfoList" :key="item.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="item.isChecked" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="item.isChecked"
+              @change="updateChecked(item, $event)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="item.imgUrl" />
@@ -49,11 +54,11 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="totalPrice" />
+        <input class="chooseAll" type="checkbox" :checked="ifAllChecked" />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="deleteAllCheckedCart()">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -84,7 +89,6 @@ export default {
       this.$store.dispatch('getCartList');
     },
     handler: _.throttle(async function (type, disNum, cart) {
-      console.log(type, disNum, cart);
       switch (type) {
         case 'add':
           disNum = 1;
@@ -110,7 +114,6 @@ export default {
       }
     }, 1000),
     deleteCartListById: _.throttle(async function (cart) {
-      console.log(cart);
       try {
         await this.$store.dispatch('deleteCartListBySkuId', cart.skuId);
         this.getData();
@@ -118,6 +121,26 @@ export default {
         alert(error);
       }
     }, 1000),
+    async updateChecked(cart, $event) {
+      try {
+        let isChecked = $event.target.checked ? '1' : '0';
+        await this.$store.dispatch('updateCheckedById', {
+          skuId: cart.skuId,
+          isChecked: isChecked,
+        });
+        this.getData();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    async deleteAllCheckedCart() {
+      try {
+        await this.$store.dispatch('deleteAllCheckedCart');
+        this.getData();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   computed: {
     ...mapGetters(['cartList']),

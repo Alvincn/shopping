@@ -1,4 +1,4 @@
-import { reqCartList, reqDeleteCartById } from '@/api';
+import { reqCartList, reqDeleteCartById, reqUpdateCheckedById } from '@/api';
 
 const state = {
   cartList: {},
@@ -23,6 +23,22 @@ const actions = {
     } else {
       return Promise.reject(new Error('false'));
     }
+  },
+  async updateCheckedById({ commit }, { skuId, isChecked }) {
+    let result = await reqUpdateCheckedById(skuId, isChecked);
+    if (result.code == 200) {
+      return 'ok';
+    } else {
+      return Promise.reject(new Error('faile'));
+    }
+  },
+  deleteAllCheckedCart({ dispatch, getters }) {
+    let PromiseAll = [];
+    getters.cartList.cartInfoList.forEach((cart) => {
+      let promise = cart.isChecked == 1 ? dispatch('deleteCartListBySkuId', cart.skuId) : '';
+      PromiseAll.push(promise);
+    });
+    return Promise.all(PromiseAll);
   },
 };
 const getters = {
