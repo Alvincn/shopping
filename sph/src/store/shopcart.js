@@ -40,6 +40,14 @@ const actions = {
     });
     return Promise.all(PromiseAll);
   },
+  updateAllCartIsChecked({ dispatch, getters }, isChecked) {
+    let PromiseAll = [];
+    getters.cartList.cartInfoList.forEach((cart) => {
+      let promise = dispatch('updateCheckedById', { skuId: cart.skuId, isChecked });
+      PromiseAll.push(promise);
+    });
+    return Promise.all(PromiseAll);
+  },
 };
 const getters = {
   cartList(state) {
