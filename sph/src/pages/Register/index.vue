@@ -9,31 +9,30 @@
       <div class="content">
         <label>手机号:</label>
         <input type="text" placeholder="请输入你的手机号" v-model="phone" />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errorMessage.phoneErrorMessage }}</span>
       </div>
       <div class="content">
         <label>验证码:</label>
         <input type="text" placeholder="请输入验证码" v-model="code" />
-        <button style="height: 35px; width: 8 0px">获取验证码</button>
-        <span class="error-msg">错误提示信息</span>
+        <button style="height: 35px; width: 8 0px" @click="getCode">获取验证码</button>
+        <span class="error-msg">{{ errorMessage.codeErrorMessage }}</span>
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码" />
-        <span class="error-msg">错误提示信息</span>
+        <input type="password" placeholder="请输入你的登录密码" v-model="password" />
+        <span class="error-msg">{{ errorMessage.passErrorMessage }}</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码" />
-        <span class="error-msg">错误提示信息</span>
+        <input type="password" placeholder="请输入确认密码" v-model="conPassword" />
+        <span class="error-msg">{{ errorMessage.conPassErrorMessage }}</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input name="m1" type="checkbox" v-model="agree" />
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="userRegister">完成注册</button>
       </div>
     </div>
 
@@ -62,7 +61,47 @@ export default {
     return {
       phone: '',
       code: '',
+      errorMessage: {
+        codeErrorMessage: '',
+        phoneErrorMessage: '',
+        passErrorMessage: '',
+        conPassErrorMessage: '',
+      },
+      password: '',
+      conPassword: '',
+      agree: true,
     };
+  },
+  methods: {
+    async getCode() {
+      const { phone } = this;
+      if (phone == '') {
+        return (this.errorMessage.phoneErrorMessage = '别空着啊兄弟');
+      } else {
+        this.errorMessage.phoneErrorMessage = '';
+      }
+      try {
+        phone && this.$store.dispatch('getCode', this.phone);
+        this.code = await this.$store.state.user.code;
+      } catch (error) {
+        alert(error);
+      }
+    },
+    async userRegister() {
+      if (this.password != this.conPassword) {
+        return (this.errorMessage.conPassErrorMessage = '兄弟你这不扯呢吗，这两次密码都不一样啊');
+      }
+      try {
+        const { phone, code, password, conPassword } = this;
+        phone &&
+          code &&
+          password == conPassword &&
+          (await this.$store.dispatch('userRegister', { phone, code, password, conPassword }));
+        this.$router.push('/login');
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
 };
 </script>
