@@ -29,6 +29,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getFloorList');
+    try {
+      this.$store.dispatch('getUserInfo');
+    } catch (error) {
+      alert(error.message);
+    }
   },
   computed: {
     ...mapState({

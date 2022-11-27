@@ -35,7 +35,9 @@ export const reqGetCode = (phone) =>
 // 注册
 export const reqUserRegister = (data) =>
   requests({ url: `/user/passport/register`, data, method: 'post' });
-
 // 登录
 export const reqUserLogin = (data) =>
   requests({ url: `/user/passport/login`, data, method: 'post' });
+// 获取用户信息，需要待着用户的token
+export const reqUserInfo = () =>
+  requests({ url: `/user/passport/auth/getUserInfo`, method: 'get' });
