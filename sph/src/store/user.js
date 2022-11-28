@@ -1,9 +1,9 @@
-import { reqGetCode, reqUserInfo, reqUserLogin, reqUserRegister } from '@/api';
+import { reqGetCode, reqUserInfo, reqUserLogin, reqUserLogout, reqUserRegister } from '@/api';
 
 // 登录注册模块的仓库
 const state = {
   code: '',
-  token: '',
+  token: window.localStorage.getItem('token') || '',
   userInfo: {},
 };
 const mutations = {
@@ -15,6 +15,11 @@ const mutations = {
   },
   GETUSERINFO(state, userInfo) {
     state.userInfo = userInfo;
+  },
+  CLEARUSERINFO(state) {
+    state.userInfo = {};
+    state.token = '';
+    localStorage.removeItem('token');
   },
 };
 const actions = {
@@ -51,6 +56,15 @@ const actions = {
     console.log(result);
     if (result.code == 200) {
       commit('GETUSERINFO', result.data);
+      return 'ok';
+    } else {
+      return Promise.reject(new Error('faile'));
+    }
+  },
+  async userLogout({ commit }) {
+    let result = await reqUserLogout();
+    if (result.code == 200) {
+      commit('CLEARUSERINFO');
       return 'ok';
     } else {
       return Promise.reject(new Error('faile'));

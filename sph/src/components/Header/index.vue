@@ -13,7 +13,7 @@
             </p>
             <p v-else>
               <span>{{ $store.state.user.userInfo.loginName }}</span>
-              <a href=""> | 退出登录</a>
+              <a href="javascript:;" @click="logout"> | 退出登录</a>
             </p>
           </div>
           <div class="typeList">
@@ -76,6 +76,14 @@ export default {
           query: this.$route.query,
         };
         this.$router.push(location);
+      }
+    },
+    async logout() {
+      try {
+        await this.$store.dispatch('userLogout');
+        this.$router.push('/home');
+      } catch (error) {
+        alert(error.message);
       }
     },
   },

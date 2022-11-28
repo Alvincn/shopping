@@ -41,3 +41,6 @@ export const reqUserLogin = (data) =>
 // 获取用户信息，需要待着用户的token
 export const reqUserInfo = () =>
   requests({ url: `/user/passport/auth/getUserInfo`, method: 'get' });
+
+// 退出登录
+export const reqUserLogout = () => requests({ url: `/user/passport/logout`, method: 'get' });
