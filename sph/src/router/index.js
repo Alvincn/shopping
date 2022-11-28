@@ -30,9 +30,12 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
     );
   }
 };
-export default new VueRouter({
+let router = new VueRouter({
   routes,
   scrollBehavior(from, to, savedPosition) {
     return { y: 0 };
   },
 });
+// 全局守卫。前置守卫
+router.beforeEach((from, to, next) => {});
+export default router;
