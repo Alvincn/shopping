@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 // 引入全部路由
 import routes from './routes';
+// 引入store
+import store from '@/store';
 Vue.use(VueRouter);
 let originPush = VueRouter.prototype.push;
 let originReplace = VueRouter.prototype.replace;
@@ -30,6 +32,7 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
     );
   }
 };
+// 对外保留VueRouter的实例
 let router = new VueRouter({
   routes,
   scrollBehavior(from, to, savedPosition) {
@@ -37,5 +40,15 @@ let router = new VueRouter({
   },
 });
 // 全局守卫。前置守卫
-router.beforeEach((from, to, next) => {});
+router.beforeEach((to, from, next) => {
+  let token = store.state.user.token;
+  if (token) {
+    if (to.path == '/login' || to.path == '/register') {
+      return next('/home');
+    }
+    next();
+  } else {
+    next();
+  }
+});
 export default router;
