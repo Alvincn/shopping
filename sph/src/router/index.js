@@ -40,13 +40,29 @@ let router = new VueRouter({
   },
 });
 // 全局守卫。前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   let token = store.state.user.token;
+  let userName = store.state.user.userInfo.name;
   if (token) {
     if (to.path == '/login' || to.path == '/register') {
-      return next('/home');
+      next('/home');
+    } else {
+      // 如果说没有用户信息的话
+      if (!userName) {
+        // 获取用户信息
+        try {
+          // 获取用户信息
+          await store.dispatch('getUserInfo');
+          next();
+        } catch (error) {
+          // 如果说token失效了，需要重新获取
+          store.dispatch('userLogout');
+          next('/login');
+        }
+      } else {
+        next();
+      }
     }
-    next();
   } else {
     next();
   }

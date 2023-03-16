@@ -11,6 +11,8 @@ import store from '@/store';
 import '@/mock/mockServe.js';
 // 引入swiper
 import 'swiper/css/swiper.css';
+// 统一引入接口函数
+import * as API from '@/api';
 // 注册全局组件 再入口文件注册一次之后，全局都可使用
 // 引入轮播图
 import TypeNav from '@/components/TypeNav';
@@ -26,6 +28,7 @@ new Vue({
   render: (h) => h(App),
   beforeCreate() {
     Vue.prototype.$bus = this;
+    Vue.prototype.$api = API;
   },
   router,
   store,

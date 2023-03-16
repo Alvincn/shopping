@@ -27,7 +27,7 @@
             </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{ item.skuPrice }}</span>
+            <span class="price">￥{{ item.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
             <a href="javascript:void(0)" class="mins" @click="handler('minus', -1, item)">-</a>
@@ -42,7 +42,7 @@
             <a href="javascript:void(0)" class="plus" @click="handler('add', 1, item)">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ item.skuPrice * item.skuNum }}</span>
+            <span class="sum">￥{{ item.skuPrice * item.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet" @click="deleteCartListById(item)">删除</a>
@@ -71,10 +71,10 @@
         <div class="chosed">已选择 <span>0</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">{{ totalPrice }}</i>
+          <i class="summoney">￥{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" @click="$router.push('/trade')">结算</a>
         </div>
       </div>
     </div>
