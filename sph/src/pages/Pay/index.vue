@@ -68,7 +68,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" href="javascript:;" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -85,11 +85,14 @@
 </template>
 
 <script>
+import QRCode from 'qrcode';
 export default {
   name: 'Pay',
   data() {
     return {
       payInfo: '',
+      timer: null,
+      code: '',
     };
   },
   computed: {
@@ -98,7 +101,7 @@ export default {
     },
   },
   mounted() {
-    this.getPayInfo(-);
+    this.getPayInfo();
   },
   methods: {
     async getPayInfo() {
@@ -107,6 +110,48 @@ export default {
       if (result.code == 200) {
         this.payInfo = result.data;
       }
+    },
+    open() {
+      // 生成一个二维码
+      QRCode.toDataURL(this.payInfo.codeUrl).then((res) => {
+        this.$alert(`<img src=${res} ></img>`, '微信支付', {
+          dangerouslyUseHTMLString: true,
+          center: true,
+          showCancelButton: true,
+          cancelButtonText: '支付遇见问题',
+          confirmButtonText: '已支付成功',
+          showClose: false,
+          beforeClose: (type, instance, done) => {
+            if (type == 'cancel') {
+              alert('请联系管理员');
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+            } else {
+              if (this.code == 200) {
+                clearInterval(this.timer);
+                this.timer = null;
+                done();
+                this.$router.push('/paysuccess');
+              }
+            }
+          },
+        }).then();
+        // 需要知道支付成功还是失败
+        // 如果成功，路由跳转，如果失败，提示信息
+        if (!this.timer) {
+          this.timer = setInterval(async () => {
+            let result = await this.$api.reqPayStatus(this.orderId);
+            if (result.code == 200) {
+              clearInterval(this.timer);
+              this.timer = null;
+              this.code = result.code;
+              this.$msgbox.close();
+              this.$router.push('/paysuccess');
+            }
+          }, 1000);
+        }
+      });
     },
   },
 };

@@ -68,7 +68,10 @@
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">
+          共有 <span>{{ cartInfoList.length }}</span
+          >件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
           <i class="summoney">￥{{ totalPrice }}</i>
