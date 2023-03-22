@@ -52,10 +52,6 @@
             <li>尚品汇通信</li>
           </ul>
         </div>
-        <div class="footerItem">
-          <h4>帮助中心</h4>
-          <img src="./images/wx_cz.jpg" />
-        </div>
       </div>
       <div class="copyright">
         <ul class="helpLink">
@@ -97,8 +93,8 @@
           </li>
           <li>关于我们</li>
         </ul>
-        <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-        <p>京ICP备19006430号</p>
+        <p>地址：吉林省吉林市龙潭区</p>
+        <p>吉ICP备2021005980号-1</p>
       </div>
     </div>
   </div>

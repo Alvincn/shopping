@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import routes from './routes';
 // 引入store
 import store from '@/store';
+import { Button, MessageBox } from 'element-ui';
 Vue.use(VueRouter);
 let originPush = VueRouter.prototype.push;
 let originReplace = VueRouter.prototype.replace;
@@ -64,6 +65,14 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
+    if (
+      to.path == '/trade' ||
+      to.path == '/center/myorder' ||
+      to.path == '/shopcart' ||
+      to.path == '/pay'
+    ) {
+      MessageBox.alert('未登录，请先登录').then(() => next('/login?redirect=' + to.path));
+    }
     next();
   }
 });

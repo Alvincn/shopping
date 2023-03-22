@@ -21,7 +21,7 @@
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" v-model="password" />
+                <input type="password" placeholder="请输入密码" v-model="password" />
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
@@ -80,7 +80,12 @@ export default {
       }
       try {
         await this.$store.dispatch('userLogin', { phone: this.phone, password: this.password });
-        this.$router.push('/home');
+        let toPath = this.$route.query.redirect;
+        if (toPath) {
+          this.$router.push(toPath);
+        } else {
+          this.$router.push('/home');
+        }
       } catch (error) {
         alert(error.message);
       }

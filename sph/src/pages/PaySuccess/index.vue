@@ -18,6 +18,13 @@
 <script>
 export default {
   name: 'PaySuccess',
+  beforeRouteEnter(to, from, next) {
+    if (from.path == '/pay') {
+      next();
+    } else {
+      next(false);
+    }
+  },
 };
 </script>
 

@@ -49,6 +49,13 @@ export default [
     meta: {
       show: true,
     },
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/trade') {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
   {
     path: '/trade',
@@ -56,6 +63,14 @@ export default [
     component: Trade,
     meta: {
       show: true,
+    },
+    beforeEnter: (to, from, next) => {
+      // 只能从购物车界面跳转到交易页面
+      if (from.path == '/shopcart') {
+        next();
+      } else {
+        next(false);
+      }
     },
   },
   {
