@@ -15,6 +15,8 @@ import 'swiper/css/swiper.css';
 import * as API from '@/api';
 // 按照需求引入elementui
 import { Button, MessageBox } from 'element-ui';
+// 引入vue-lazyload 图片懒加载
+import VueLazyload from 'vue-lazyload';
 
 // 注册全局组件 再入口文件注册一次之后，全局都可使用
 // 引入轮播图
@@ -31,6 +33,13 @@ Vue.component(Button.name, Button);
 // 注册组件还有一种写法
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
+// 引入图片
+import lbxx from '@/assets/labixiaoxin.gif';
+import '@/plugins/validate';
+Vue.use(VueLazyload, {
+  // 懒加载默认图片
+  loading: lbxx,
+});
 
 new Vue({
   render: (h) => h(App),

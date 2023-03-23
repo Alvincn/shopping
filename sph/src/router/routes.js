@@ -35,7 +35,7 @@ export default [
     },
   },
   {
-    path: '/paysuccess',
+    path: '/paysuccess/',
     name: 'PaySuccess',
     component: PaySuccess,
     meta: {
