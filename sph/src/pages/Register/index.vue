@@ -123,18 +123,16 @@ export default {
       }
     },
     async userRegister() {
-      if (this.password != this.conPassword) {
-        return (this.errorMessage.conPassErrorMessage = '兄弟你这不扯呢吗，这两次密码都不一样啊');
-      }
-      try {
-        const { phone, code, password, conPassword } = this;
-        phone &&
-          code &&
-          password == conPassword &&
-          (await this.$store.dispatch('userRegister', { phone, code, password, conPassword }));
-        this.$router.push('/login');
-      } catch (error) {
-        alert(error.message);
+      const success = await this.$validator.validateAll();
+      if (success) {
+        try {
+          const { phone, code, password, conPassword } = this;
+
+          await this.$store.dispatch('userRegister', { phone, code, password, conPassword });
+          this.$router.push('/login');
+        } catch (error) {
+          alert(error.message);
+        }
       }
     },
   },
