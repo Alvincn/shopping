@@ -15,15 +15,15 @@ export default [
   {
     path: '/center',
     name: 'Center',
-    component: Center,
+    component: () => import('@/pages/Center'),
     children: [
       {
         path: 'myorder',
-        component: MyOrder,
+        component: () => import('@/pages/Center/myOrder'),
       },
       {
         path: 'grouporder',
-        component: groupOrder,
+        component: () => import('@/pages/Center/groupOrder'),
       },
       {
         path: '/center',
@@ -37,7 +37,7 @@ export default [
   {
     path: '/paysuccess/',
     name: 'PaySuccess',
-    component: PaySuccess,
+    component: () => import('@/pages/PaySuccess'),
     meta: {
       show: true,
     },
@@ -45,7 +45,7 @@ export default [
   {
     path: '/pay',
     name: 'pay',
-    component: Pay,
+    component: () => import('@/pages/Pay'),
     meta: {
       show: true,
     },
@@ -60,7 +60,7 @@ export default [
   {
     path: '/trade',
     name: 'trade',
-    component: Trade,
+    component: () => import('@/pages/Trade'),
     meta: {
       show: true,
     },
@@ -76,7 +76,7 @@ export default [
   {
     path: '/addcartsuccess',
     name: 'addcartsuccess',
-    component: AddCartSuccess,
+    component: () => import('@/pages/AddCartSuccess'),
     meta: {
       show: true,
     },
@@ -87,14 +87,14 @@ export default [
   },
   {
     path: '/home',
-    component: Home,
+    component: () => import('@/pages/Home'),
     meta: {
       show: true,
     },
   },
   {
     path: '/search/:keyword?',
-    component: Search,
+    component: () => import('@/pages/Search'),
     meta: {
       show: true,
     },
@@ -102,28 +102,28 @@ export default [
   },
   {
     path: '/login',
-    component: Login,
+    component: () => import('@/pages/Login'),
     meta: {
       show: false,
     },
   },
   {
     path: '/register',
-    component: Register,
+    component: () => import('@/pages/Register'),
     meta: {
       show: false,
     },
   },
   {
     path: '/detail/:skuid',
-    component: Detail,
+    component: () => import('@/pages/Detail'),
     meta: {
       show: false,
     },
   },
   {
     path: '/shopcart',
-    component: ShopCart,
+    component: () => import('@/pages/ShopCart'),
     meta: {
       show: true,
     },

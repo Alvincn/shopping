@@ -1,7 +1,9 @@
 const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
+  productionSourceMap: false,
   transpileDependencies: true,
   lintOnSave: false,
+  publicPath: './',
   devServer: {
     proxy: {
       // 哪个请求带 /api ，哪个请求就使用代理服务器
